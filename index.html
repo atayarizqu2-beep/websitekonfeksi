@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konfeksi Latansa - Premium Apparel Catalog</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Syne & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Syne', 'sans-serif'],
+                        body: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            bg: '#F5F4F0',
+                            card: '#EFECE6',
+                            dark: '#121212',
+                            accent: '#2C2B29',
+                            muted: '#71716E',
+                            wa: '#25D366',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Smooth Scroll Reveal CSS Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(35px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F5F4F0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #121212;
+            border-radius: 3px;
+        }
+
+        .img-zoom-container {
+            overflow: hidden;
+        }
+        .img-zoom-container img {
+            transition: transform 0.7s ease;
+        }
+        .img-zoom-container:hover img {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-brand-bg text-brand-dark font-body antialiased selection:bg-brand-dark selection:text-brand-bg flex flex-col min-h-screen">
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="sticky top-0 z-40 bg-brand-bg/90 backdrop-blur-md border-b border-black/5 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="md:hidden p-2 text-brand-dark hover:text-brand-muted focus:outline-none">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+
+                <!-- Navigation Left (Desktop) -->
+                <nav class="hidden md:flex space-x-8 text-xs font-semibold tracking-widest uppercase">
+                    <button onclick="navTo('home')" class="hover:text-brand-muted transition">Beranda</button>
+                    <button onclick="navTo('categories-section')" class="hover:text-brand-muted transition">Kategori</button>
+                    <button onclick="navTo('lokasi-section')" class="hover:text-brand-muted transition">Lokasi</button>
+                    <button onclick="navTo('kontak-section')" class="hover:text-brand-muted transition">Kontak</button>
+                </nav>
+
+                <!-- Brand Name (CENTER) -->
+                <div class="text-center cursor-pointer" onclick="showHomeView()">
+                    <h1 class="font-heading font-extrabold text-2xl md:text-3xl tracking-tighter uppercase text-brand-dark">
+                        LATANSA
+                    </h1>
+                    <p class="text-[9px] tracking-[0.3em] uppercase text-brand-muted -mt-1 font-semibold">Konfeksi Catalog</p>
+                </div>
+
+                <!-- Search Bar Right -->
+                <div class="flex items-center space-x-4">
+                    <div class="relative hidden sm:block">
+                        <input type="text" id="searchInput" oninput="handleSearch(this.value)" placeholder="Cari produk..." 
+                               class="bg-brand-card/80 text-xs px-4 py-2 pl-9 rounded-full border border-black/10 focus:outline-none focus:border-brand-dark w-40 sm:w-56 transition-all">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-brand-muted"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Drawer -->
+        <div id="mobileMenu" class="hidden md:hidden bg-brand-bg border-b border-black/10 px-6 py-4 space-y-3 text-sm font-semibold uppercase tracking-wider">
+            <button onclick="navTo('home'); toggleMobileMenu();" class="block w-full text-left py-1">Beranda</button>
+            <button onclick="navTo('categories-section'); toggleMobileMenu();" class="block w-full text-left py-1">Kategori</button>
+            <button onclick="navTo('lokasi-section'); toggleMobileMenu();" class="block w-full text-left py-1">Lokasi</button>
+            <button onclick="navTo('kontak-section'); toggleMobileMenu();" class="block w-full text-left py-1">Kontak</button>
+            <div class="pt-2">
+                <input type="text" oninput="handleSearch(this.value)" placeholder="Cari produk..." 
+                       class="w-full bg-brand-card text-xs px-4 py-2.5 rounded-full border border-black/10 focus:outline-none">
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="flex-grow">
+
+        <!-- ================= PAGE 1: HOME VIEW ================= -->
+        <div id="homeView" class="space-y-16 md:space-y-24 pb-16">
+            
+            <!-- HERO SECTION (Full Image Banner - Responsive & Uncropped) -->
+            <section class="relative bg-brand-card overflow-hidden border-b border-black/5 reveal flex justify-center">
+                <div class="w-full relative group cursor-pointer flex justify-center" onclick="navTo('categories-section')">
+                    <!-- Main Hero Image (Fully Visible & Uncropped) -->
+                    <img id="heroFullImage" 
+                         src="https://github.com/atayarizqu2-beep/website/blob/main/WhatsApp%20Image%202026-10-26%20at%2012.50.25.jpeg?raw=true" 
+                         alt="Konfeksi Latansa Hero Banner" 
+                         class="w-full h-auto max-h-[85vh] object-contain transition-transform duration-700 ease-in-out group-hover:scale-[1.005]">
+                    
+                    <!-- Overlay Tipis agar Elegan (Opsional) -->
+                    <div class="absolute inset-0 bg-black/5 transition-opacity group-hover:bg-black/0 pointer-events-none"></div>
+                </div>
+            </section>
+
+            <!-- SEARCH BY CATEGORIES SECTION (Image 1 Ref) -->
+            <section id="categories-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
+                <div class="text-center mb-10">
+                    <h3 class="font-heading text-xs font-bold tracking-[0.3em] uppercase text-brand-muted">Search By Categories</h3>
+                    <p class="font-heading text-2xl md:text-3xl font-bold uppercase tracking-tight mt-1">Pilih Kategori Produk</p>
+                </div>
+
+                <!-- Category Items Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
+                    <!-- Kaos -->
+                    <div onclick="openCategoryView('Kaos')" class="cursor-pointer group bg-brand-card p-6 text-center border border-black/5 hover:border-brand-dark transition-all rounded-lg">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-brand-bg rounded-full flex items-center justify-center text-brand-dark group-hover:bg-brand-dark group-hover:text-brand-bg transition">
+                            <i class="fa-solid fa-shirt text-2xl"></i>
+                        </div>
+                        <h4 class="font-heading font-bold text-sm tracking-wider uppercase">Kaos</h4>
+                        <p class="text-[10px] text-brand-muted uppercase tracking-widest mt-1">Cotton Combed & Polo</p>
+                    </div>
+
+                    <!-- Kemeja -->
+                    <div onclick="openCategoryView('Kemeja')" class="cursor-pointer group bg-brand-card p-6 text-center border border-black/5 hover:border-brand-dark transition-all rounded-lg">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-brand-bg rounded-full flex items-center justify-center text-brand-dark group-hover:bg-brand-dark group-hover:text-brand-bg transition">
+                            <i class="fa-solid fa-[#fa-shirt] fa-user-tie text-2xl"></i>
+                        </div>
+                        <h4 class="font-heading font-bold text-sm tracking-wider uppercase">Kemeja</h4>
+                        <p class="text-[10px] text-brand-muted uppercase tracking-widest mt-1">PDL, PDH & Formal</p>
+                    </div>
+
+                    <!-- Koko -->
+                    <div onclick="openCategoryView('Koko')" class="cursor-pointer group bg-brand-card p-6 text-center border border-black/5 hover:border-brand-dark transition-all rounded-lg">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-brand-bg rounded-full flex items-center justify-center text-brand-dark group-hover:bg-brand-dark group-hover:text-brand-bg transition">
+                            <i class="fa-solid fa-kaaba text-2xl"></i>
+                        </div>
+                        <h4 class="font-heading font-bold text-sm tracking-wider uppercase">Koko</h4>
+                        <p class="text-[10px] text-brand-muted uppercase tracking-widest mt-1">Busana Muslim Modern</p>
+                    </div>
+
+                    <!-- Celana -->
+                    <div onclick="openCategoryView('Celana')" class="cursor-pointer group bg-brand-card p-6 text-center border border-black/5 hover:border-brand-dark transition-all rounded-lg">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-brand-bg rounded-full flex items-center justify-center text-brand-dark group-hover:bg-brand-dark group-hover:text-brand-bg transition">
+                            <i class="fa-solid fa-mattress-pillow text-2xl"></i>
+                        </div>
+                        <h4 class="font-heading font-bold text-sm tracking-wider uppercase">Celana</h4>
+                        <p class="text-[10px] text-brand-muted uppercase tracking-widest mt-1">Chino, Cargo & Casual</p>
+                    </div>
+
+                    <!-- Pakaian Outer / Jaket -->
+                    <div onclick="openCategoryView('Pakaian')" class="cursor-pointer group bg-brand-card p-6 text-center border border-black/5 hover:border-brand-dark transition-all rounded-lg col-span-2 sm:col-span-1">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-brand-bg rounded-full flex items-center justify-center text-brand-dark group-hover:bg-brand-dark group-hover:text-brand-bg transition">
+                            <i class="fa-solid fa-vest text-2xl"></i>
+                        </div>
+                        <h4 class="font-heading font-bold text-sm tracking-wider uppercase">Pakaian</h4>
+                        <p class="text-[10px] text-brand-muted uppercase tracking-widest mt-1">Jaket, Hoodie & Outer</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- GAMBARAN UMUM PRODUK / EDITORIAL BANNERS (Image 1 Ref) -->
+            <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 reveal">
+                <!-- Banner Grid 1 -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                    <div class="md:col-span-5 img-zoom-container rounded-lg">
+                        <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80" 
+                             alt="Katalog Latansa Overview" class="w-full h-80 object-cover rounded-lg">
+                    </div>
+                    <div class="md:col-span-7 bg-brand-card p-8 md:p-12 rounded-lg border border-black/5 flex flex-col justify-center">
+                        <span class="text-xs font-bold tracking-widest text-brand-muted uppercase mb-2">Best Quality Material</span>
+                        <h3 class="font-heading text-2xl md:text-3xl font-bold uppercase mb-4">Kenyamanan & Ketahanan Tingkat Tinggi</h3>
+                        <p class="text-xs md:text-sm text-brand-muted leading-relaxed mb-6">
+                            Setiap jahitan di Konfeksi Latansa dikerjakan oleh tenaga ahli berpengalaman. Kami menjamin kerapian, ketepatan ukuran, dan pemilihan kain terbaik untuk kepuasan pelanggan.
+                        </p>
+                        <div>
+                            <button onclick="openCategoryView('Kaos')" class="bg-brand-dark text-brand-bg text-xs font-bold uppercase tracking-widest px-6 py-3 hover:bg-opacity-80 transition">
+                                Lihat Koleksi Kaos
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Banner Grid 2 (New Season / New Vibes) -->
+                <div class="relative rounded-lg overflow-hidden bg-brand-dark text-brand-bg p-8 md:p-16 flex items-center">
+                    <div class="absolute inset-0 z-0 opacity-40">
+                        <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1600&q=80" 
+                             alt="New Vibes Banner" class="w-full h-full object-cover">
+                    </div>
+                    <div class="relative z-10 max-w-lg">
+                        <span class="text-xs font-bold tracking-[0.3em] uppercase text-gray-300 block mb-2">New Season</span>
+                        <h3 class="font-heading text-4xl sm:text-5xl font-extrabold uppercase mb-4 tracking-tight">NEW VIBES</h3>
+                        <p class="text-xs sm:text-sm text-gray-300 mb-6">Temukan berbagai pilihan kemeja & pakaian kerja kustom terbaik untuk instansi, komunitas, maupun brand Anda.</p>
+                        <button onclick="openCategoryView('Kemeja')" class="bg-brand-bg text-brand-dark text-xs font-bold uppercase tracking-widest px-8 py-3.5 hover:bg-gray-200 transition">
+                            Explore Collection
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LOKASI SECTION -->
+            <section id="lokasi-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
+                <div class="bg-brand-card p-8 md:p-12 rounded-lg border border-black/5">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <span class="text-xs font-bold tracking-widest text-brand-muted uppercase block mb-2">Workshop & Showroom</span>
+                            <h3 class="font-heading text-2xl md:text-3xl font-bold uppercase mb-4">Lokasi Konfeksi Latansa</h3>
+                            <p class="text-xs sm:text-sm text-brand-muted leading-relaxed mb-4">
+                                Kunjungi workshop kami untuk melihat sampel bahan secara langsung dan berkonsultasi mengenai pesanan konfeksi Anda.
+                            </p>
+                            <div class="space-y-2 text-xs font-semibold">
+                                <p><i class="fa-solid fa-location-dot mr-2 text-brand-dark"></i> Jl. Industri Konfeksi No. 88, Madiun / Ponorogo, Jawa Timur</p>
+                                <p><i class="fa-solid fa-clock mr-2 text-brand-dark"></i> Senin - Sabtu: 08.00 - 17.00 WIB</p>
+                            </div>
+                        </div>
+                        <div class="h-64 bg-gray-300 rounded-lg overflow-hidden relative shadow-inner">
+                            <iframe class="w-full h-full border-0" 
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126500.518!2d111.51!3d-7.62!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwMzcnMTIuMCJTIDExM8KwMzAnMDAuMCJF!5e0!3m2!1sid!2sid!4v1620000000000" 
+                                    allowfullscreen="" loading="lazy"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FOOTER / CONTACT US BAR (Image 1 Bottom Ref & Video Linktree Ref) -->
+            <section id="kontak-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
+                <div class="bg-brand-card p-8 md:p-12 rounded-lg border border-black/10 text-center">
+                    <h3 class="font-heading text-xs font-bold tracking-[0.3em] uppercase text-brand-muted mb-2">Hubungi Kami</h3>
+                    <h2 class="font-heading text-2xl sm:text-3xl font-extrabold uppercase mb-8">Pesan & Konsultasi Sekarang</h2>
+                    
+                    <!-- Direct Action Contact Buttons -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
+                        <!-- WhatsApp -->
+                        <a href="https://wa.me/6285179981926?text=Halo%20Konfeksi%20Latansa,%20saya%20ingin%20bertanya%20mengenai%20produk%20katalog" 
+                           target="_blank" 
+                           class="flex items-center justify-center space-x-3 bg-[#25D366] text-white py-4 px-6 rounded-lg font-bold text-xs uppercase tracking-wider hover:opacity-90 transition shadow-md">
+                            <i class="fa-brands fa-whatsapp text-xl"></i>
+                            <span>WhatsApp CS</span>
+                        </a>
+
+                        <!-- Instagram -->
+                        <a href="https://instagram.com" 
+                           target="_blank" 
+                           class="flex items-center justify-center space-x-3 bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 text-white py-4 px-6 rounded-lg font-bold text-xs uppercase tracking-wider hover:opacity-90 transition shadow-md">
+                            <i class="fa-brands fa-instagram text-xl"></i>
+                            <span>Instagram</span>
+                        </a>
+
+                        <!-- Shopee -->
+                        <a href="https://shopee.co.id" 
+                           target="_blank" 
+                           class="flex items-center justify-center space-x-3 bg-[#EE4D2D] text-white py-4 px-6 rounded-lg font-bold text-xs uppercase tracking-wider hover:opacity-90 transition shadow-md">
+                            <i class="fa-solid fa-bag-shopping text-xl"></i>
+                            <span>Shopee Store</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+
+        <!-- ================= PAGE 2: CATEGORY VIEW (Image 2 Ref) ================= -->
+        <div id="categoryView" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+            
+            <!-- Breadcrumb / Back Button -->
+            <div class="flex items-center justify-between border-b border-black/10 pb-4">
+                <button onclick="showHomeView()" class="inline-flex items-center text-xs font-bold uppercase tracking-wider text-brand-muted hover:text-brand-dark transition">
+                    <i class="fa-solid fa-arrow-left mr-2"></i> Kembali ke Beranda
+                </button>
+                <span id="categoryBreadcrumb" class="text-xs text-brand-muted font-semibold uppercase tracking-widest">Kategori / Kaos</span>
+            </div>
+
+            <!-- Top Large Category Banner (Full Image dynamic by category) -->
+            <div class="relative bg-brand-card rounded-xl overflow-hidden border border-black/5 reveal group">
+                <!-- Dynamic Category Hero Image -->
+                <div class="w-full h-64 sm:h-80 md:h-96 relative overflow-hidden">
+                    <img id="categoryBannerImage" 
+                         src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=1600&q=80" 
+                         alt="Category Banner" 
+                         class="w-full h-full object-cover transition-transform duration-700 ease-in-out group-hover:scale-[1.02]">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex items-end p-6 md:p-10">
+                        <div class="text-white">
+                            <span class="text-[10px] font-bold tracking-[0.3em] uppercase opacity-80 block mb-1">Koleksi Terlengkap</span>
+                            <h1 id="categoryTitleBanner" class="font-heading text-3xl sm:text-5xl font-extrabold uppercase tracking-tight">KEMEJA</h1>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub Navigation Category Pills / Filters -->
+                <div class="p-4 md:p-6 bg-brand-card border-t border-black/10">
+                    <p class="text-[10px] font-bold tracking-widest text-brand-muted uppercase text-center mb-3">Pilih Kategori Lainnya:</p>
+                    <div id="categoryTabsNav" class="flex flex-wrap justify-center gap-2 sm:gap-4 text-xs font-bold uppercase tracking-wider">
+                        <button onclick="openCategoryView('Kaos')" id="catTab-Kaos" class="px-4 py-2 rounded-full border border-black/10 hover:border-brand-dark transition">Kaos</button>
+                        <button onclick="openCategoryView('Kemeja')" id="catTab-Kemeja" class="px-4 py-2 rounded-full border border-black/10 hover:border-brand-dark transition">Kemeja</button>
+                        <button onclick="openCategoryView('Koko')" id="catTab-Koko" class="px-4 py-2 rounded-full border border-black/10 hover:border-brand-dark transition">Koko</button>
+                        <button onclick="openCategoryView('Celana')" id="catTab-Celana" class="px-4 py-2 rounded-full border border-black/10 hover:border-brand-dark transition">Celana</button>
+                        <button onclick="openCategoryView('Pakaian')" id="catTab-Pakaian" class="px-4 py-2 rounded-full border border-black/10 hover:border-brand-dark transition">Pakaian</button>
+                        <button onclick="openCategoryView('Semua')" id="catTab-Semua" class="px-4 py-2 rounded-full border border-black/10 hover:border-brand-dark transition">Semua</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shop By Collection Grid Heading -->
+            <div class="flex items-center justify-between reveal">
+                <h3 class="font-heading font-bold text-lg uppercase tracking-wider">Daftar Produk Kategori</h3>
+                <span id="productCount" class="text-xs text-brand-muted">Showing all items</span>
+            </div>
+
+            <!-- PRODUCTS GRID -->
+            <div id="productsGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 reveal">
+                <!-- Dynamically Inserted Products Here -->
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- ================= PAGE 3: PRODUCT DETAIL MODAL (Image 3 Ref) ================= -->
+    <div id="productDetailModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+        <div class="bg-brand-bg border border-black/10 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative animate-fade-in my-auto">
+            
+            <!-- Modal Close Button -->
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 z-20 w-10 h-10 bg-brand-card rounded-full flex items-center justify-center text-brand-dark hover:bg-brand-dark hover:text-brand-bg transition">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="p-6 md:p-10 grid grid-cols-1 md:grid-cols-12 gap-8">
+                
+                <!-- Left Side: Thumbnails & Main Image -->
+                <div class="md:col-span-6 flex flex-col-reverse sm:flex-row gap-4">
+                    <!-- Gallery Thumbnails -->
+                    <div id="modalThumbnails" class="flex sm:flex-col gap-2 overflow-x-auto sm:overflow-y-auto max-h-80">
+                        <!-- Inserted dynamically -->
+                    </div>
+                    <!-- Main Display Image -->
+                    <div class="flex-1 bg-brand-card rounded-lg overflow-hidden h-80 sm:h-96 relative">
+                        <img id="modalMainImg" src="" alt="Detail Produk" class="w-full h-full object-cover">
+                    </div>
+                </div>
+
+                <!-- Right Side: Details & WA Order Button -->
+                <div class="md:col-span-6 flex flex-col justify-between space-y-6">
+                    <div>
+                        <span id="modalCategoryBadge" class="text-[10px] font-bold tracking-[0.2em] uppercase text-brand-muted bg-brand-card px-3 py-1 rounded-full">Kategori</span>
+                        <h2 id="modalTitle" class="font-heading text-2xl sm:text-3xl font-extrabold uppercase mt-3 mb-2">Nama Produk</h2>
+                        <p id="modalPrice" class="text-xl font-bold text-brand-dark mb-4">Rp 85.000</p>
+                        
+                        <!-- Order Via WA Button (Highlight Feature Image 3) -->
+                        <a id="modalWaBtn" href="#" target="_blank" 
+                           class="flex items-center justify-center space-x-3 bg-brand-dark text-brand-bg py-4 px-6 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-opacity-90 transition shadow-lg w-full mb-6">
+                            <i class="fa-brands fa-whatsapp text-lg text-brand-wa"></i>
+                            <span>Pesan lewat WA</span>
+                        </a>
+
+                        <!-- Interactive Detail Tabs -->
+                        <div class="border-b border-black/10 flex space-x-6 text-xs font-bold uppercase tracking-wider mb-4">
+                            <button onclick="switchTab('details')" id="tabBtn-details" class="pb-2 border-b-2 border-brand-dark text-brand-dark">Detail</button>
+                            <button onclick="switchTab('materials')" id="tabBtn-materials" class="pb-2 border-b-2 border-transparent text-brand-muted hover:text-brand-dark">Bahan</button>
+                            <button onclick="switchTab('size')" id="tabBtn-size" class="pb-2 border-b-2 border-transparent text-brand-muted hover:text-brand-dark">Ukuran</button>
+                        </div>
+
+                        <!-- Tab Content -->
+                        <div id="tabContent" class="text-xs text-brand-muted leading-relaxed space-y-2 min-h-[100px]">
+                            <!-- Content inserted dynamically -->
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-black/5 flex items-center justify-between text-[11px] text-brand-muted">
+                        <span><i class="fa-solid fa-truck-fast mr-1"></i> Pengiriman Seluruh Indonesia</span>
+                        <span><i class="fa-solid fa-shield-halved mr-1"></i> Garansi Presisi</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER COPYRIGHT -->
+    <footer class="bg-brand-dark text-brand-bg py-8 mt-auto text-center border-t border-white/10 text-xs">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="font-heading font-bold text-sm tracking-widest uppercase mb-1">KONFEKSI LATANSA</p>
+            <p class="text-gray-400 text-[10px]">© 2026 Konfeksi Latansa. All Rights Reserved. Catalog Web App.</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Database Produk Konfeksi Latansa
+        const productsData = [
+            // KAOS
+            {
+                id: 'kaos-1',
+                category: 'Kaos',
+                name: 'Kaos Oversize Essential',
+                price: 'Rp 65.000 - Rp 85.000',
+                image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=800&q=80'
+                ],
+                details: 'Kaos oversize dengan potong kain modern, nyaman dipakai santai maupun acara kasual.',
+                materials: 'Cotton Combed 24s Heavyweight, Lembut & Menyerap Keringat.',
+                size: 'S, M, L, XL, XXL (Unisex Oversized Cut)'
+            },
+            {
+                id: 'kaos-2',
+                category: 'Kaos',
+                name: 'Kaos Wangki Polo Latansa',
+                price: 'Rp 75.000',
+                image: 'https://images.unsplash.com/photo-1625910513413-4ec23521e15b?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1625910513413-4ec23521e15b?auto=format&fit=crop&w=800&q=80'
+                ],
+                details: 'Polo shirt berkerah rapih cocok untuk seragam kantor, promosi, dan event.',
+                materials: 'Lacoste Cotton Pique Premium, Kerah Kokoh.',
+                size: 'M, L, XL, XXL, 3XL'
+            },
+            {
+                id: 'kaos-3',
+                category: 'Kaos',
+                name: 'Kaos Event Custom Sablon',
+                price: 'Rp 45.000 - Rp 60.000',
+                image: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=800&q=80'
+                ],
+                details: 'Melayani pesanan partai besar untuk kaos panitia, reuni, dan komunitas.',
+                materials: 'Cotton Combed 30s / Carded, Sablon Plastisol / DTF.',
+                size: 'All Size Custom'
+            },
+            {
+                id: 'kaos-4',
+                category: 'Kaos',
+                name: 'Kaos Katun Lengan Pendek',
+                price: 'Rp 65.000 - Rp 75.000',
+                image: 'https://github.com/atayarizqu2-beep/website/blob/main/_MG_9183.JPG?raw=true',
+                gallery: [
+                    'https://github.com/atayarizqu2-beep/website/blob/main/_MG_7654.JPG?raw=true',
+                    'https://github.com/atayarizqu2-beep/website/blob/main/_MG_0435.JPG?raw=true',
+                    'https://github.com/atayarizqu2-beep/website/blob/main/_MG_0434.JPG?raw=true',
+                    'https://github.com/atayarizqu2-beep/website/blob/main/_MG_9183.JPG?raw=true'
+                ],
+                details: 'Elegan.',
+                materials: 'Cotton Combed 24s Heavyweight, Lembut & Menyerap Keringat.',
+                size: 'S, M, L, XL, XXL, XXXL'
+            },
+
+            // KEMEJA
+            {
+                id: 'kemeja-hijau-1',
+                category: 'Kemeja',
+                name: 'Kemeja Hijau PDL Drill',
+                price: 'Rp 115.000 - Rp 135.000',
+                image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=800&q=80'
+                ],
+                details: 'Kemeja PDL warna hijau taktis suitable untuk kegiatan outdoor, komunitas, dan lapangan.',
+                materials: 'Kain Japan Drill Premium, adem, tidak panas, dan tahan goresan.',
+                size: 'S, M, L, XL, XXL, 3XL'
+            },
+            {
+                id: 'kemeja-1',
+                category: 'Kemeja',
+                name: 'Kemeja PDL / Lapangan Tactical',
+                price: 'Rp 120.000 - Rp 150.000',
+                image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=800&q=80'
+                ],
+                details: 'Kemeja kerja outdoor dengan ventilasi jaring di punggung dan saku fungsional.',
+                materials: 'Kain Drill (American / Japan Drill), Tahan Gesekan.',
+                size: 'S, M, L, XL, XXL, 3XL'
+            },
+            {
+                id: 'kemeja-2',
+                category: 'Kemeja',
+                name: 'Kemeja Formal Oxford Executive',
+                price: 'Rp 110.000',
+                image: 'https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=800&q=80'
+                ],
+                details: 'Kemeja kerja elegan berpotongan slim-fit/regular fit untuk aktivitas harian.',
+                materials: 'Cotton Oxford Super Fine.',
+                size: 'S, M, L, XL'
+            },
+
+            // KOKO
+            {
+                id: 'koko-1',
+                category: 'Koko',
+                name: 'Baju Koko Modern Eksklusif',
+                price: 'Rp 95.000 - Rp 130.000',
+                image: 'https://images.unsplash.com/photo-1564859228273-274232fdb516?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1564859228273-274232fdb516?auto=format&fit=crop&w=800&q=80'
+                ],
+                details: 'Baju Koko berdesain minimalis dengan aksen bordir halus di dada.',
+                materials: 'Kain Katun Toyobo Import / Premium Linen.',
+                size: 'M, L, XL, XXL'
+            },
+            {
+                id: 'koko-2',
+                category: 'Koko',
+                name: 'Koko Kurta Latansa Style',
+                price: 'Rp 105.000',
+                image: 'https://images.unsplash.com/photo-1609357605129-26f69add5d6e?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1609357605129-26f69add5d6e?auto=format&fit=crop&w=800&q=80'
+                ],
+                details: 'Model potongan Kurta kekinian panjang ke paha, sangat adem dan islami.',
+                materials: 'Katun Madinah Adem.',
+                size: 'M, L, XL'
+            },
+
+            // CELANA
+            {
+                id: 'celana-1',
+                category: 'Celana',
+                name: 'Celana Chino Slim Latansa',
+                price: 'Rp 115.000',
+                image: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=800&q=80'
+                ],
+                details: 'Celana chino kasual elastis cocok untuk acara santai maupun semi-formal.',
+                materials: 'Cotton Twill Stretch Premium.',
+                size: '28, 30, 32, 34, 36'
+            },
+
+            // PAKAIAN / OUTER
+            {
+                id: 'pakaian-1',
+                category: 'Pakaian',
+                name: 'Hoodie Essential Heavyweight',
+                price: 'Rp 135.000 - Rp 165.000',
+                image: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=800&q=80'
+                ],
+                details: 'Jaket hoodie tebal hangat dengan jahitan rapat dan rib lengan kokoh.',
+                materials: 'Cotton Fleece Taiwan Heavyweight.',
+                size: 'M, L, XL, XXL'
+            }
+        ];
+
+        let currentActiveProduct = null;
+
+        // ================= HISTORY / BACK BUTTON HANDLER =================
+        // Menangani navigasi tombol Back fisik HP/Browser
+        window.addEventListener('popstate', function(event) {
+            const modal = document.getElementById('productDetailModal');
+            
+            // Jika modal detail sedang terbuka, tutup modal saat tombol back ditekan
+            if (modal && !modal.classList.contains('hidden')) {
+                closeProductModal(false); // param false agar tidak melakukan history.back lagi
+                return;
+            }
+
+            // Jika sedang berada di tampilan kategori, kembali ke beranda
+            if (event.state && event.state.view === 'category') {
+                renderCategoryViewFromState(event.state.category);
+            } else {
+                renderHomeViewFromState();
+            }
+        });
+
+        // Set initial state saat pertama kali dimuat
+        window.addEventListener('DOMContentLoaded', () => {
+            try {
+                history.replaceState({ view: 'home' }, '', window.location.pathname);
+            } catch (e) {
+                console.warn('History API not supported in blob/iframe sandbox environment');
+            }
+            initScrollAnimations();
+        });
+
+        // Intersection Observer for Smooth Reveal Effects
+        function initScrollAnimations() {
+            const reveals = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            reveals.forEach(reveal => observer.observe(reveal));
+        }
+
+        // Navigation Switcher & State Rendering
+        function showHomeView(pushHistory = true) {
+            if (pushHistory && history.state && history.state.view !== 'home') {
+                try {
+                    history.pushState({ view: 'home' }, '', window.location.pathname);
+                } catch (e) {
+                    console.warn('History API pushState skipped in sandbox environment');
+                }
+            }
+            renderHomeViewFromState();
+        }
+
+        function renderHomeViewFromState() {
+            document.getElementById('homeView').classList.remove('hidden');
+            document.getElementById('categoryView').classList.add('hidden');
+            const modal = document.getElementById('productDetailModal');
+            if (modal) modal.classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Custom Banner Images for Each Category
+        const categoryBanners = {
+            'Kaos': 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=1600&q=80',
+            'Kemeja': 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=1600&q=80',
+            'Koko': 'https://images.unsplash.com/photo-1564859228273-274232fdb516?auto=format&fit=crop&w=1600&q=80',
+            'Celana': 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=1600&q=80',
+            'Pakaian': 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=1600&q=80',
+            'Semua': 'https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=1600&q=80'
+        };
+
+        function openCategoryView(categoryName, pushHistory = true) {
+            if (pushHistory) {
+                try {
+                    history.pushState({ view: 'category', category: categoryName }, '', `#category-${categoryName.toLowerCase()}`);
+                } catch (e) {
+                    console.warn('History API pushState skipped in sandbox environment');
+                }
+            }
+            renderCategoryViewFromState(categoryName);
+        }
+
+        function renderCategoryViewFromState(categoryName) {
+            document.getElementById('homeView').classList.add('hidden');
+            document.getElementById('categoryView').classList.remove('hidden');
+            const modal = document.getElementById('productDetailModal');
+            if (modal) modal.classList.add('hidden');
+            
+            // Update Title and Breadcrumb
+            document.getElementById('categoryTitleBanner').innerText = categoryName.toUpperCase();
+            document.getElementById('categoryBreadcrumb').innerText = `Kategori / ${categoryName}`;
+            
+            // Update Banner Image
+            const bannerImg = categoryBanners[categoryName] || categoryBanners['Semua'];
+            document.getElementById('categoryBannerImage').src = bannerImg;
+
+            // Highlight Active Category Button
+            const allCats = ['Kaos', 'Kemeja', 'Koko', 'Celana', 'Pakaian', 'Semua'];
+            allCats.forEach(cat => {
+                const btn = document.getElementById(`catTab-${cat}`);
+                if (btn) {
+                    if (cat.toLowerCase() === categoryName.toLowerCase()) {
+                        btn.className = "px-4 py-2 rounded-full bg-brand-dark text-brand-bg font-bold border border-brand-dark transition shadow-sm";
+                    } else {
+                        btn.className = "px-4 py-2 rounded-full bg-brand-card text-brand-dark border border-black/10 hover:border-brand-dark transition";
+                    }
+                }
+            });
+
+            // Render Products
+            renderCategoryProducts(categoryName);
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function navTo(targetId) {
+            if (targetId === 'home') {
+                showHomeView();
+            } else {
+                showHomeView();
+                setTimeout(() => {
+                    const el = document.getElementById(targetId);
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        document.getElementById('mobileMenuBtn').addEventListener('click', toggleMobileMenu);
+
+        // Render Products in Category Page
+        function renderCategoryProducts(category) {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
+
+            const filtered = productsData.filter(p => p.category.toLowerCase() === category.toLowerCase() || category === 'Semua');
+            document.getElementById('productCount').innerText = `Menampilkan ${filtered.length} produk`;
+
+            filtered.forEach(product => {
+                const card = document.createElement('div');
+                card.className = "bg-brand-card rounded-lg overflow-hidden border border-black/5 flex flex-col justify-between group transition hover:shadow-lg";
+                card.innerHTML = `
+                    <div class="img-zoom-container relative h-64 bg-gray-200 cursor-pointer" onclick="openProductModal('${product.id}')">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-4 flex flex-col justify-between flex-grow">
+                        <div>
+                            <span class="text-[9px] font-bold tracking-widest text-brand-muted uppercase">${product.category}</span>
+                            <h4 class="font-heading font-bold text-sm uppercase text-brand-dark mt-1">${product.name}</h4>
+                            <p class="text-xs font-semibold text-brand-dark mt-1">${product.price}</p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-black/5 flex items-center justify-between">
+                            <button onclick="openProductModal('${product.id}')" class="text-xs font-bold uppercase tracking-wider text-brand-dark underline hover:text-brand-muted">
+                                Detail <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Search Filter
+        function handleSearch(query) {
+            if (!query.trim()) return;
+            const q = query.toLowerCase();
+            const matchedProducts = productsData.filter(p => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
+            
+            try {
+                history.pushState({ view: 'search', query: query }, '', `#search-${encodeURIComponent(query)}`);
+            } catch (e) {
+                console.warn('History API pushState skipped in sandbox environment');
+            }
+
+            document.getElementById('homeView').classList.add('hidden');
+            document.getElementById('categoryView').classList.remove('hidden');
+            document.getElementById('categoryTitleBanner').innerText = `Pencarian: "${query}"`;
+            document.getElementById('categoryBreadcrumb').innerText = `Hasil Cari`;
+            
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
+            document.getElementById('productCount').innerText = `Menampilkan ${matchedProducts.length} produk`;
+
+            if (matchedProducts.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-center text-sm text-brand-muted py-12">Tidak ada produk yang cocok dengan pencarian.</p>`;
+                return;
+            }
+
+            matchedProducts.forEach(product => {
+                const card = document.createElement('div');
+                card.className = "bg-brand-card rounded-lg overflow-hidden border border-black/5 flex flex-col justify-between group";
+                card.innerHTML = `
+                    <div class="img-zoom-container relative h-64 bg-gray-200 cursor-pointer" onclick="openProductModal('${product.id}')">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-4 flex flex-col justify-between flex-grow">
+                        <div>
+                            <span class="text-[9px] font-bold tracking-widest text-brand-muted uppercase">${product.category}</span>
+                            <h4 class="font-heading font-bold text-sm uppercase text-brand-dark mt-1">${product.name}</h4>
+                            <p class="text-xs font-semibold text-brand-dark mt-1">${product.price}</p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-black/5">
+                            <button onclick="openProductModal('${product.id}')" class="text-xs font-bold uppercase tracking-wider text-brand-dark underline">
+                                Detail
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Product Detail Modal Handlers
+        function openProductModal(productId) {
+            const product = productsData.find(p => p.id === productId);
+            if (!product) return;
+
+            currentActiveProduct = product;
+
+            // Push state modal ke history
+            try {
+                history.pushState({ view: 'modal', productId: productId }, '', `#detail-${productId}`);
+            } catch (e) {
+                console.warn('History API pushState skipped in sandbox environment');
+            }
+
+            // Populate Modal Content
+            document.getElementById('modalTitle').innerText = product.name;
+            document.getElementById('modalPrice').innerText = product.price;
+            document.getElementById('modalCategoryBadge').innerText = product.category;
+            document.getElementById('modalMainImg').src = product.image;
+
+            // Set WhatsApp Link (Dinamis sesuai produk yang diklik)
+            const waText = encodeURIComponent(`Halo Konfeksi Latansa, saya berminat memesan produk: *${product.name}* (${product.price}). Bisa dibantu info selengkapnya?`);
+            document.getElementById('modalWaBtn').href = `https://wa.me/6285179981926?text=${waText}`;
+
+            // Populate Thumbnails
+            const thumbContainer = document.getElementById('modalThumbnails');
+            thumbContainer.innerHTML = '';
+            product.gallery.forEach(imgUrl => {
+                const thumb = document.createElement('img');
+                thumb.src = imgUrl;
+                thumb.className = "w-16 h-16 object-cover rounded-md cursor-pointer border border-black/10 hover:border-brand-dark transition";
+                thumb.onclick = () => {
+                    document.getElementById('modalMainImg').src = imgUrl;
+                };
+                thumbContainer.appendChild(thumb);
+            });
+
+            // Default Tab
+            switchTab('details');
+
+            // Display Modal
+            document.getElementById('productDetailModal').classList.remove('hidden');
+        }
+
+        function closeProductModal(triggerBack = true) {
+            document.getElementById('productDetailModal').classList.add('hidden');
+            if (triggerBack && history.state && history.state.view === 'modal') {
+                try {
+                    history.back();
+                } catch (e) {
+                    console.warn('History API back skipped in sandbox environment');
+                }
+            }
+        }
+
+        function switchTab(tabName) {
+            if (!currentActiveProduct) return;
+
+            const tabs = ['details', 'materials', 'size'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tabBtn-${t}`);
+                if (t === tabName) {
+                    btn.className = "pb-2 border-b-2 border-brand-dark text-brand-dark font-bold";
+                } else {
+                    btn.className = "pb-2 border-b-2 border-transparent text-brand-muted hover:text-brand-dark";
+                }
+            });
+
+            const contentEl = document.getElementById('tabContent');
+            if (tabName === 'details') {
+                contentEl.innerHTML = `<p>${currentActiveProduct.details}</p>`;
+            } else if (tabName === 'materials') {
+                contentEl.innerHTML = `<p><strong class="text-brand-dark">Material:</strong> ${currentActiveProduct.materials}</p>`;
+            } else if (tabName === 'size') {
+                contentEl.innerHTML = `<p><strong class="text-brand-dark">Pilihan Ukuran:</strong> ${currentActiveProduct.size}</p>`;
+            }
+        }
+
+        // Initialize on window load
+        window.onload = function() {
+            initScrollAnimations();
+        };
+    </script>
+</body>
+</html>
